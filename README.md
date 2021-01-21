@@ -32,16 +32,16 @@ Y por último hay que copiar los binarios a una ruta conocida por el sistema:
 
 Ahora es posible ejecutar el programa haciendo uso del comando `shamir-secret-sharing-exe` junto con las opciones:
 
-* `c n t plain pts ciph` - Para encriptar:
+* `c n t plano pts cif` - Para encriptar:
   * `n` - Número de puntos que se van a generar.
   * `t` - Número de puntos necesarios para desencriptar.
-  * `plain` - Ruta del archivo que se quiere encriptar.
+  * `plano` - Ruta del archivo que se quiere encriptar.
   * `pts` - Ruta del archivo donde se van a guardar los n puntos.
-  * `ciph` - Ruta donde se va a guardar el archivo cifrado.
-* `d pts ciph plain` - Para desencriptar:
+  * `cif` - Ruta donde se va a guardar el archivo cifrado.
+* `d pts cif plano` - Para desencriptar:
   * `pts` - Ruta del archivo donde se encuentran al menos t puntos.
-  * `ciph` - Ruta donde se encuentra el archivo encriptado.
-  * `plain` - Ruta donde se quiere guardar el archivo desencriptado.
+  * `cif` - Ruta donde se encuentra el archivo encriptado.
+  * `plano` - Ruta donde se quiere guardar el archivo desencriptado.
 
 ### Ejemplos
 
