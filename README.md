@@ -2,7 +2,7 @@
 
 ## Descripción general
 
-El esquema de secreto compartido de Shamir hace posible que un sólo dato pueda ser ocultado de manera que, a partir de él, se generan n diferentes datos y que con, al menos t ≤ n cualesquiera de ellos sea posible recuperar el dato original.
+El [esquema de secreto compartido de Shamir](https://es.wikipedia.org/wiki/Esquema_de_Shamir) hace posible que un sólo dato pueda ser ocultado de manera que, a partir de él, se generan n diferentes datos y que con, al menos t ≤ n cualesquiera de ellos sea posible recuperar el dato original.
 
 ## Instalación
 
