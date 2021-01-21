@@ -7,14 +7,15 @@ import Data.Binary
 import Data.Bits
 import qualified Data.ByteString as BS 
 
+import Zp
 import Polynomial
 
 ptsFromString :: String -> [Point]
 ptsFromString = map ((\(a,b) -> (fromInteger a, fromInteger b)) . read) . lines
 
 
-toByteString :: Integer -> BS.ByteString
-toByteString = fillZeroes . BS.pack . reverse . convert
+toByteString :: ZP -> BS.ByteString
+toByteString = fillZeroes . BS.pack . reverse . convert . toInteger
   where
     convert :: Integer -> [Word8]
     convert i = case divMod i 256 of

@@ -7,9 +7,7 @@ import Data.Maybe
 import Data.Char
 import Data.Either
 import Data.ByteString  as BS (ByteString, readFile, writeFile, length)
-import Data.ByteString.Lazy (toStrict)
 import Data.ByteArray (convert, empty)
-import Data.Binary (encode)
 import Data.String (fromString)
 import Control.Monad
 import Crypto.Hash
@@ -63,10 +61,11 @@ decryptMode (Decrypt points ciph plain) = do
   ciphFile <- BS.readFile ciph
   let pts   = ptsFromString ptsFile
       const = lagrange pts (fromIntegral 0)
-      key   = (Key . toByteString . toInteger) const :: Key AES256 ByteString
+      key   = (Key . toByteString) const :: Key AES256 ByteString
   case decrypt key ciphFile of
     Left  e -> (printErr . show) e
     Right c -> BS.writeFile plain c
+
 
 main :: IO ()
 main = do 
