@@ -62,9 +62,11 @@ decryptMode (Decrypt points ciph plain) = do
   let pts   = ptsFromString ptsFile
       const = lagrange pts (fromIntegral 0)
       key   = (Key . toByteString) const :: Key AES256 ByteString
-  case decrypt key ciphFile of
-    Left  e -> (printErr . show) e
-    Right c -> BS.writeFile plain c
+  if (Prelude.length . (flip showHex) "" . toInteger) const > 64
+    then printErr "Invalid set of points."         
+    else case decrypt key ciphFile of
+           Left  e -> (printErr . show) e
+           Right c -> BS.writeFile plain c
 
 
 main :: IO ()
