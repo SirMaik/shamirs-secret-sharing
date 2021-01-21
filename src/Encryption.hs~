@@ -1,0 +1,22 @@
+module Encryption
+  (
+  ) where
+
+import Crypto.Cipher.Types
+import Crypto.Cipher.AES (AES256)
+import Crypto.Error
+
+
+-- | Initialize a block cipher
+initCipher :: (BlockCipher c, ByteArray a) => Key c a -> Either CryptoError c
+initCipher (Key k) = case cipherInit k of
+  CryptoFailed e -> Left e
+  CryptoPassed a -> Right a
+
+
+  
+encrypt :: (BlockCipher c, ByteArray a) => Key c a -> IV c -> a -> Either CryptoError a
+encrypt secretKey initIV msg =
+  case initCipher secretKey of
+    Left e -> Left e
+    Right c -> Right $ ctrCombine c initIV msg
