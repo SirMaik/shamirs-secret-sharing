@@ -1,9 +1,11 @@
+
 module Polynomial
-    (randPoly,
-     randPoints,
-     lagrange,
-     horner
-    ) where
+  ( X, Y, Point,
+    randPoly,
+    randPoints,
+    lagrange,
+    horner
+  ) where
 
 import Data.List
 import Crypto.Number.Generate

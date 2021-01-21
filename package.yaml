@@ -25,6 +25,7 @@ dependencies:
 - bytestring
 - binary
 - cryptonite
+# - word8
 # - text
 
 library:

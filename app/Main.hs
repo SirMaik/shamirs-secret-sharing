@@ -20,7 +20,7 @@ import Crypto.Cipher.AES (AES256)
 import LocalIO
 import Polynomial
 import Encryption 
-
+import Misc
 
 data Mode = Encrypt Integer Integer FilePath FilePath FilePath
           | Decrypt FilePath FilePath FilePath
@@ -50,26 +50,20 @@ encryptMode (Encrypt n t plain points ciph) = do
     Right c -> do drg    <- getSystemDRG                  
                   let [(const,_)]  = (readHex . show) hash
                       (poly, drg') = randPoly   drg  (fromInteger const) (t-1)
-                      (pts , _   ) = randPoints drg' poly n
-                  print const
-                  (print . BS.length . (convert :: Digest SHA256 -> ByteString)) hash 
+                      (pts , _   ) = randPoints drg' poly n            
                   BS.writeFile ciph c                  
                   ptsHandle <- openFile points WriteMode 
                   mapM_ (\p -> hPutStrLn ptsHandle (show p)) pts
                   hClose ptsHandle
 
                     
-ptsFromString = map ((\(a,b) -> (fromInteger a, fromInteger b)) . read) . lines
-
 decryptMode :: Mode -> IO ()
 decryptMode (Decrypt points ciph plain) = do
   ptsFile  <- IO.readFile points
   ciphFile <- BS.readFile ciph
   let pts   = ptsFromString ptsFile
-      const = toInteger $ lagrange pts (fromIntegral 0)
-      key   = (Key . fromString . (flip showHex) "" . toInteger) const :: Key AES256 ByteString
-  (print . (fromString :: String -> ByteString) . (flip showHex) "" . toInteger) $ lagrange pts (fromIntegral 0)
-  (print . BS.length . (convert :: Digest SHA256 -> ByteString) . fromJust . (digestFromByteString :: ByteString -> Maybe (Digest SHA256)) . fromString . (flip showHex) "" . toInteger) $ lagrange pts (fromIntegral 0)
+      const = lagrange pts (fromIntegral 0)
+      key   = (Key . toByteString . toInteger) const :: Key AES256 ByteString
   case decrypt key ciphFile of
     Left  e -> (printErr . show) e
     Right c -> BS.writeFile plain c

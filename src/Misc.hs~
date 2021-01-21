@@ -1,0 +1,7 @@
+module Misc
+  ( ptsFromString
+  ) where
+
+
+  
+ptsFromString = map ((\(a,b) -> (fromInteger a, fromInteger b)) . read) . lines
