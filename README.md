@@ -43,8 +43,13 @@ Ahora es posible ejecutar el programa haciendo uso del comando `shamir-secret-sh
   * `cif` - Ruta donde se encuentra el archivo encriptado.
   * `plano` - Ruta donde se quiere guardar el archivo desencriptado.
 
-### Ejemplos
+## Documentación
 
+En el caso de que se quiera generar la documentación es necesario ejecutar:
+
+`$ stack haddock`
+
+En la última línea que se despliegue en la terminal se mostrará la ruta del `index.html`, el cual puede ser abierto con cualquier explorador web para ver la documentación. 
 
 
 ## Construído con

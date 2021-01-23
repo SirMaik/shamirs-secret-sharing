@@ -1,3 +1,14 @@
+{-|
+Module      : Misc
+Description : Funciones extras.
+Copyright   : -
+License     : -
+Maintainer  : mianorsi@ciencias.unam.mx
+Stability   : experimental
+Portability : POSIX
+
+Aquí se encuentran las funciones que no encajan en otros módulos
+-}
 module Misc
   ( ptsFromString
   , toByteString
@@ -10,11 +21,16 @@ import qualified Data.ByteString as BS
 import Zp
 import Polynomial
 
-ptsFromString :: String -> [Point]
+
+-- | Función que convierte una cadena en una lista de puntos.
+ptsFromString :: String  -- ^ Cadena.
+              -> [Point] -- ^ Lista de puntos.
 ptsFromString = map ((\(a,b) -> (fromInteger a, fromInteger b)) . read) . lines
 
 
-toByteString :: ZP -> BS.ByteString
+-- | Función que convierte un número en Zp en un ByteString.
+toByteString :: ZP            -- ^ Número en Zp.
+             -> BS.ByteString -- ^ Bytestring. 
 toByteString = fillZeroes . BS.pack . reverse . convert . toInteger
   where
     convert :: Integer -> [Word8]
