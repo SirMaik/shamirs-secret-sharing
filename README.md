@@ -38,6 +38,7 @@ Ahora es posible ejecutar el programa haciendo uso del comando `shamir-secret-sh
   * `plano` - Ruta del archivo que se quiere encriptar.
   * `pts` - Ruta del archivo donde se van a guardar los n puntos.
   * `cif` - Ruta donde se va a guardar el archivo cifrado.
+  
   En el caso de que los argumentos sean válidos será necesario ingresar una contraseña de máximo 30 caracteres. 
   
 * `d pts cif plano` - Para desencriptar:
