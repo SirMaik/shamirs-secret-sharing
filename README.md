@@ -17,7 +17,7 @@ Es necesario tener **stack** actualizado:
 `$ stack upgrade`
 
 
-Para construir el paquete es necesario pararse dentro del directorio *cobertura-nubosa* y ejecutar:
+Para construir el paquete es necesario pararse dentro del directorio *shamirs-secret-sharing* y ejecutar:
 ```
 $ stack init
 $ stack build
