@@ -83,8 +83,8 @@ randPoints drg poly n = let l    = genericTake n $ iterate (genRandom . snd) (ge
 lagrange :: [Point] -- ^ La lista de puntos.
          -> X       -- ^ El valor que se quiere evaluar.
          -> Y       -- ^ El resultado.
-lagrange poly x = sum $ map (\p1@(x1,y1) -> (\r -> y1 * r) (basePol p1)) poly
-  where basePol pi@(xi,_) = foldr (\p2@(x2,_) r -> if pi /= p2 then ((x-x2)/(xi-x2))*r else r) 1 poly
+lagrange pts x = sum $ map (\p1@(x1,y1) -> (\r -> y1 * r) (basePol p1)) pts
+  where basePol pi@(xi,_) = foldr (\p2@(x2,_) r -> if pi /= p2 then ((x-x2)/(xi-x2))*r else r) 1 pts
 
   
 -- | Algoritmo de evaluación de Horner.
