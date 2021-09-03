@@ -1,13 +1,13 @@
 {-|
 Module      : LocalIO
-Description : Entrada / Salida
+Description : Input / Output
 Copyright   : -
 License     : -
 Maintainer  : mianorsi@ciencias.unam.mx
 Stability   : experimental
 Portability : POSIX
 
-Aquí se encuentran las funciones correspondientes a la entrada / salida.
+Here are the definitions that correspond to input / output.
 -}
 module LocalIO
     ( getPassword,
@@ -19,14 +19,16 @@ import Control.Exception
 import qualified Data.ByteString as BS
 
 
--- | Recibe una cadena y la imprime en stderr.
-printErr :: String -> IO ()
+-- |
+printErr :: String -- ^ A string
+         -> IO ()  -- ^ Prints the string to stderr
 printErr err = hPutStrLn stderr $ "Error: " ++ err
 
 
--- | Función que se usa para leer una contraseña de la entrada estándar.
-getPassword :: Int               -- ^ Longitud máxima de la contraseña.
-            -> IO BS.ByteString  -- ^ Contraseña leída. 
+-- | Function that is used to read a password from stdin
+getPassword :: Int               -- ^ Maximum length of string
+
+            -> IO BS.ByteString  -- ^ Password
 getPassword maxSize = do
   putStr "Password: "
   hFlush stdout
@@ -37,9 +39,9 @@ getPassword maxSize = do
     else return pass
 
 
--- | Función que lleva a cabo una acción sin eco.
-withoutEcho :: IO a -- ^ Acción que se quiere llevar a cabo
-            -> IO a -- ^ Resultado de la acción. 
+-- | Function that carries out an IO action without echo in the terminal
+withoutEcho :: IO a -- ^ IO action to be carried out
+            -> IO a -- ^ Result of the action
 withoutEcho action = do
   old <- hGetEcho stdin
   bracket_ (hSetEcho stdin False) (hSetEcho stdin old) action

@@ -21,18 +21,17 @@ import Encryption
 import Misc
 
 
-
--- | Tipo de dato algebraico con los posibles modos del programa (Encriptar y desencriptar). 
+-- | Algebraic data type that with the possible modes of the program (encrypt and decrypt)
 data Mode = Encrypt Integer Integer FilePath FilePath FilePath
           | Decrypt FilePath FilePath FilePath
 
 
 
 
--- | Función que se usa para parsear los argumentos de la línea de comandos. 
-parse :: [String]                              -- ^ La lista de argumentos.
-      -> Either String (Mode -> IO (), Mode)   -- ^ En el caso de ser válidos (Right) devuelve el modo correspondiente y una función para procesarlo.
-                                               --   En el caso de que sean inválidos (Left) devuelve un error. 
+-- | Function that parses de command line arguments
+parse :: [String]                              -- ^ List of arguments
+      -> Either String (Mode -> IO (), Mode)   -- ^ Right -> (A function that is used to process the mode, the mode)
+                                               --   Left  -> Error
 parse ["c", n, t, plain, pts, ciph]  = if all isDigit n && all isDigit t
                                  then let n' = read n
                                           t' = read t
@@ -44,7 +43,7 @@ parse ["d", points, ciph, plain] = Right (decryptMode, Decrypt points ciph plain
 parse _                          = Left "Invalid argument combination." -- Se puede desglosar en mensajes más claros
                                      
        
-  -- | Función que hace todo lo correspondiente a encriptar.
+  -- | Function that does everything necessary when the mode is Encrypt
 encryptMode :: Mode  -> IO ()
 encryptMode (Encrypt n t plain points ciph) = do
   pass      <- getPassword 30
@@ -63,7 +62,7 @@ encryptMode (Encrypt n t plain points ciph) = do
                   hClose ptsHandle
 
 
--- | Función que hace todo lo correspondiente a desencriptar.             
+-- | Function that does everything necessary when the mode is Decrypt
 decryptMode :: Mode -> IO ()
 decryptMode (Decrypt points ciph plain) = do
   ptsFile  <- IO.readFile points
@@ -77,7 +76,7 @@ decryptMode (Decrypt points ciph plain) = do
            Left  e -> (printErr . show) e
            Right c -> BS.writeFile plain c
 
--- | Función main. 
+-- | Main function
 main :: IO ()
 main = do 
   args <- getArgs

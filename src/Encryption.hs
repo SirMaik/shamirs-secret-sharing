@@ -2,14 +2,14 @@
 
 {-|
 Module      : Encryption
-Description : Encriptado / Desencriptado
+Description : Encrypt/ Decrypt
 Copyright   : -
 License     : -
 Maintainer  : mianorsi@ciencias.unam.mx
 Stability   : experimental
 Portability : POSIX
 
-Aquí se encuentran las funcciones correspondientes a encriptar/desencriptar.
+Here are the definitions that correspond to encrytion / decrytion.
 -}
 module Encryption
   ( Key (Key),
@@ -23,33 +23,35 @@ import Crypto.Cipher.AES (AES256)
 import Crypto.Error
 
 
--- | Tipo de dato algebraico que modela la llave para encriptar/desencriptar.
--- El tipo de dato c corresponde al algoritmo que se usará.
--- El tipo de dato a corresponde a la llave como tal.
+-- | Algebraic data type which models a key used to encrypt/decrypt
+-- Data type c corresponds to the algorithm that's going to be used
+-- Data type a corresponds to the key
 data Key c a where
   Key :: (BlockCipher c, ByteArray a) => a -> Key c a
 
   
--- | Función que inicializa un cifrado de bloque
-initCipher :: (BlockCipher c, ByteArray a) => Key c a               -- ^ La llave de encriptado/desencriptado.
-                                           -> Either CryptoError c  -- ^ En el caso de ser exitoso (Right) devuelve una función de encriptado/desencriptado.
-                                                                    -- ^ Si no devuelve un mensaje de error (Left).
+-- | Function that initiates the block cypher
+initCipher :: (BlockCipher c, ByteArray a) => Key c a               -- ^ The key to encrypt/decrypt
+                                           -> Either CryptoError c  -- ^ Right -> returns an encryption/decryption function
+                                                                    -- ^ Left  -> returns an error
 initCipher (Key k) = case cipherInit k of
                        CryptoFailed e -> Left e
                        CryptoPassed a -> Right a
 
 
--- | Función que se usa para encriptar.  
-encrypt :: (BlockCipher c, ByteArray a) => Key c a               -- ^ La llave de encriptado.
-                                        -> a                     -- ^ El mensaje que se quiere encriptar
-                                        -> Either CryptoError a  -- ^ El mensaje encriptado (Right) o un error (Left).
+-- | Encryption function
+encrypt :: (BlockCipher c, ByteArray a) => Key c a               -- ^ Encryption key
+                                        -> a                     -- ^ The message to be encrypted
+                                        -> Either CryptoError a  -- ^ Right -> returns the encrypted message
+                                                                 -- ^ Left  -> returns an error
 encrypt secretKey msg = case initCipher secretKey of
                           Left  e -> Left e
                           Right c -> Right $ ctrCombine c nullIV msg
 
--- | Función que se usa para desencriptar.
---   Es exactamente igual a la que se usa para encriptar. 
-decrypt :: (BlockCipher c, ByteArray a) => Key c a               -- ^ La llave de encriptado.
-                                        -> a                     -- ^ El mensaje que se quiere encriptar
-                                        -> Either CryptoError a  -- ^ El mensaje encriptado (Right) o un error (Left).
+-- | Decryption function
+--   It's identical to the encryption function
+decrypt :: (BlockCipher c, ByteArray a) => Key c a               -- ^ Decryption key
+                                        -> a                     -- ^ The message to be decrypted
+                                        -> Either CryptoError a  -- ^ Right -> returns the decrypted message
+                                                                 -- ^ Left  -> returns an error
 decrypt = encrypt
